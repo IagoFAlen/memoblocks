@@ -131,6 +131,10 @@ namespace mb {
             return map ? map->get(idx) : NULL;
         }
 
+        void push_memo_gap(Gap* gap){
+            if(map) map->push(gap->initial, gap->final, gap->block_size);
+        }
+
         bool check_sorting(MemoGaps* partition){
             for(size_t i = 0; i + 1 < partition->size; i++){
                 if(partition->get(i)->block_size > partition->get(i + 1)->block_size)
