@@ -42,13 +42,13 @@ namespace mb {
         PivotIndex high;
         PivotIndex pivot;
 
-        memo_gaps(): gaps(nullptr), size(0), capacity(0),
+        memo_gaps(): gaps(NULL), size(0), capacity(0),
             low(PivotIndex()), mid(PivotIndex()), high(PivotIndex()), pivot(PivotIndex()) {}
 
         ~memo_gaps() {
             if (gaps) {
                 free(gaps);
-                gaps = nullptr;
+                gaps = NULL;
             }
             size = capacity = 0;
             low = mid = high = pivot = PivotIndex();
@@ -119,13 +119,17 @@ namespace mb {
         }
 
         Gap* get(size_t idx) {
-            return (idx >= size) ? nullptr : &gaps[idx];
+            return (idx >= size) ? NULL : &gaps[idx];
         }
 
     } MemoGaps;
 
     typedef struct memo_blocks {
         MemoGaps* map;
+
+        Gap* get_memo_gap(size_t idx){
+            return map ? map->get(idx) : NULL;
+        }
 
         bool check_sorting(MemoGaps* partition){
             for(size_t i = 0; i + 1 < partition->size; i++){
@@ -179,6 +183,10 @@ namespace mb {
             delete right;
 
             return;
+        }
+
+        void sort(){
+            if(map) quicksort(map);
         }
 
     } MemoBlocks;
